@@ -11,5 +11,5 @@ def delete_files(directory_path):
     except OSError:
         print("Error occurred...")
 
-directory_path = "C:/Users/Skitbet/Music/"
+directory_path = input("Enter directory to search: ")
 delete_files(directory_path)
