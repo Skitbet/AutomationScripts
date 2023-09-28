@@ -1,29 +1,27 @@
-import os;
-import hashlib;
-from collections import defaultdict;
+import os
+import hashlib
+from collections import defaultdict
 
 def find_duplicate_files(directory):
+    print(f"Searching for duplicates in {directory}")
     hash_table = defaultdict(list)
 
     for folderName, subFolders, fileNames in os.walk(directory):
         for filename in fileNames:
             filepath = os.path.join(folderName, filename)
-            #calc the md5 hash of file
+            print(f"Processing file: {filepath}")
             file_hash = hash_file(filepath)
-            #add file path to table with hash as key
             hash_table[file_hash].append(filepath)
     
-    #filter out duplicate hashes
     duplicates = {hash: files for hash, files in hash_table.items() if len(files) > 1}
 
     return duplicates
 
 def hash_file(filepath):
-    # calc md5 hash of file
     hasher = hashlib.md5()
-    with open(filepath, 'rb') as file: 
+    with open(filepath, 'rb') as file:
         while True:
-            data = file.read(8192) # read file in 8KB 
+            data = file.read(65536)
             if not data:
                 break
             hasher.update(data)
@@ -40,3 +38,5 @@ if duplicated_files:
             print(f"- {file}")
 else:
     print("No duplicates found.")
+    
+print("Script completed.")
